@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
 import Logo from "/logo-white.png";
@@ -66,9 +66,9 @@ export default function ContactForm() {
       if (response.ok) {
         setSubmitted(true);
         setFormData({ name: "", email: "", whatsapp: "" });
-        navigate("/success");
-        localStorage.setItem("formSubmitted", "true");
-        navigate("/success", { replace: true });
+        navigate("/success", {
+          state: { userName: formData.name },
+        });
       } else {
         throw new Error("Something went wrong");
       }
@@ -79,11 +79,6 @@ export default function ContactForm() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (localStorage.getItem("formSubmitted") === "true") {
-      navigate("/success", { replace: true });
-    }
-  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative">
@@ -174,7 +169,7 @@ export default function ContactForm() {
             disabled={loading}
             className="w-full bg-[#fd7f0c] hover:bg-[#5a55c7] text-white font-semibold text-base sm:text-lg py-3 rounded-full transition flex justify-center items-center animate-bounce"
           >
-            {loading ? "Sending..." : "SEND"}{" "}
+            {loading ? "Sending" : "SEND"}{" "}
             <span className="ml-2 text-xl">→</span>
           </button>
 
