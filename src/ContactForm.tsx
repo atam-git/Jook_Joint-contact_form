@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
-import Logo from "/logo-white-min.png";
+import Logo from "/logo-white.png";
 import Spinner from "/spinner.gif";
+import { useNavigate } from "react-router-dom";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -13,6 +14,8 @@ export default function ContactForm() {
     whatsapp: "",
   });
   const [errors, setErrors] = useState({ name: "", email: "", whatsapp: "" });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validate = () => {
     let valid = true;
@@ -41,13 +44,46 @@ export default function ContactForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    if (!validate()) {
-      e.preventDefault();
-      return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setLoading(true);
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("whatsapp", formData.whatsapp);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xovepqgk", {
+        method: "POST",
+        body: formDataToSend,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", whatsapp: "" });
+        navigate("/success");
+        localStorage.setItem("formSubmitted", "true");
+        navigate("/success", { replace: true });
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting form. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setSubmitted(true);
   };
+  useEffect(() => {
+    if (localStorage.getItem("formSubmitted") === "true") {
+      navigate("/success", { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative">
@@ -77,12 +113,7 @@ export default function ContactForm() {
           </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          action="https://formspree.io/f/xovepqgk"
-          method="POST"
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}
           <div className="relative">
             <div className="flex items-center bg-[#f0f2f5] rounded-full px-5 py-3">
@@ -140,9 +171,11 @@ export default function ContactForm() {
           {/* Submit Button */}
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-[#fd7f0c] hover:bg-[#5a55c7] text-white font-semibold text-base sm:text-lg py-3 rounded-full transition flex justify-center items-center animate-bounce"
           >
-            SEND <span className="ml-2 text-xl">→</span>
+            {loading ? "Sending..." : "SEND"}{" "}
+            <span className="ml-2 text-xl">→</span>
           </button>
 
           {/* Sent Message */}
@@ -171,7 +204,6 @@ export default function ContactForm() {
 
         {/* Extra shapes */}
         <div className=" absolute top-16 right-8 w-4 h-4 bg-red-300 rounded-full animate-ping" />
-        {/* <div className=" absolute top-20 left-5 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[17px] border-l-transparent border-r-transparent border-b-orange-400" /> */}
       </motion.div>
     </div>
   );
