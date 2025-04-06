@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
-import Logo from "./assets/logo-white.png";
+import Logo from "./assets/logo-white-min.png";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -61,6 +61,7 @@ export default function ContactForm() {
             <img
               src={Logo}
               alt="Logo"
+              loading="lazy"
               className="w-full h-full object-contain absolute top-0 left-0"
             />
           </div>
