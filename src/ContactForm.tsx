@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
-import Logo from "./assets/logo-white-min.png";
+import Logo from "/logo-white-min.png";
+import Spinner from "/spinner.gif";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -57,11 +59,19 @@ export default function ContactForm() {
       >
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <div className="w-32 sm:w-40 h-14 sm:h-16 relative">
+          <div className="w-32 sm:w-40 h-14 sm:h-16 relative flex items-center justify-center rounded-md overflow-hidden">
+            {!logoLoaded && (
+              <img
+                src={Spinner}
+                alt="Loading..."
+                className="w-full h-full object-contain"
+              />
+            )}
             <img
               src={Logo}
               alt="Logo"
-              loading="lazy"
+              onLoad={() => setLogoLoaded(true)}
+              style={{ display: logoLoaded ? "block" : "none" }}
               className="w-full h-full object-contain absolute top-0 left-0"
             />
           </div>
