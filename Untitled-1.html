@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #3b378a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      width: 320px;
+      padding: 30px 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .contact-form h2 {
+      text-align: center;
+      color: #25274d;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 25px;
+      border: none;
+      background-color: #f1f2f6;
+      font-size: 14px;
+      resize: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #6c63ff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button span {
+      margin-left: 8px;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <form class="contact-form">
+        <h2>Contact Us</h2>
+
+        <div class="input-group">
+          <input type="text" placeholder="Username" required />
+        </div>
+
+        <div class="input-group">
+          <input type="email" placeholder="E-mail" required />
+        </div>
+
+        <div class="input-group">
+          <input type="tel" placeholder="Phone" required />
+        </div>
+
+        <button type="submit">SEND <span>→</span></button>
+      </form>
+    </div>
+  </body>
+</html>
